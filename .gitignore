@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings/
+myClient/bin/
 
 # Intellij
 .idea/
