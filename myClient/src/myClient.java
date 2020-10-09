@@ -1,11 +1,11 @@
-public class myClient {
+public class myClient
+{
 
-    public static void main(String[] args) {
-
-
-
-    }
+    public static void main(String[] args)
+    {
 
 
 
     }
+
+}
