@@ -5,6 +5,7 @@ public class myClient
     {
         System.out.println("Hej");
 
-
+        int num = 3;
+        System.out.println("Number = " + num);
     }
 }
