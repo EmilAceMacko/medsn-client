@@ -12,7 +12,10 @@ public class MEDSN_Client implements Constants {
     private String Username;
     private String hostAddress;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {            //MAIN FUNCTION HERE <----|
+
+
+
     }
 
     public byte getState() {
@@ -39,11 +42,6 @@ public class MEDSN_Client implements Constants {
         this.hostAddress = newHostAddress;
     }
 
-
-
-
-
-    //setters and getters will be placed under #MyWayOfOptimizingMyWork
 
 
 }
