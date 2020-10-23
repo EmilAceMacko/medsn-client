@@ -8,7 +8,7 @@ import javax.net.ssl.HostnameVerifier;
 public class MEDSN_Client implements Constants {
     public Chat chat;
     public Server_Manager serverMgr;
-    private Byte state;
+    private short state;
     private String Username;
     private String hostAddress;
 
@@ -18,11 +18,11 @@ public class MEDSN_Client implements Constants {
 
     }
 
-    public byte getState() {
+    public short getState() {
         return state;
     }
 
-    public void setState(Byte newState) {
+    public void setState(short newState) {
         this.state = newState;
     }
 
@@ -41,7 +41,5 @@ public class MEDSN_Client implements Constants {
     public void setHostAddress (String newHostAddress) {
         this.hostAddress = newHostAddress;
     }
-
-
 
 }
