@@ -9,5 +9,7 @@ public class myClient
 
         double phi = (1.0 + Math.sqrt(5.0)) / 2.0;
         System.out.println("Phi is equal to " + phi);
+
+
     }
 }
