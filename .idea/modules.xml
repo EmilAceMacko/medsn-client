@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/medsn-client.iml" filepath="$PROJECT_DIR$/.idea/medsn-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/myClient/myClient.iml" filepath="$PROJECT_DIR$/myClient/myClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/medsn-client.iml" filepath="$PROJECT_DIR$/medsn-client.iml" />
     </modules>
   </component>
 </project>
