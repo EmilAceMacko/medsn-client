@@ -6,25 +6,58 @@ import javax.net.ServerSocketFactory;
 import javax.net.ssl.HostnameVerifier;
 
 public class MEDSN_Client implements Constants {
+
     public Chat chat;
     public Server_Manager serverMgr;
-    private short state;
+    private static short state;
     private String Username;
     private String hostAddress;
 
     public static void main(String[] args) {            //MAIN FUNCTION HERE <----|
 
+        switch(state) {
+            case(STATE_CLIENT_OFFLINE): {
+                //Input to connect IP address and username
+                //connect();
 
+
+
+                setState(STATE_CLIENT_CONNECTING);
+                break;
+            }
+            case(STATE_CLIENT_CONNECTING): {
+
+                short i = socket.readshort();//<-----Check socket bliver lavet af Rasmus
+
+                if(i == NET.SERVER_ACCEPT) {
+                    setState(STATE_CLIENT_ONLINE);
+                }
+                break;
+            }
+            case(STATE_CLIENT_ONLINE): {
+                //Something something
+                //setState(STATE_CLIENT_DISCONNECTING);
+                break;
+
+            }
+            case(STATE_CLIENT_DISCONNECTING): {
+
+                //something
+                break;
+
+
+            }
+        }
 
     }
 
     public short getState() {
         return state;
-    }
+    }    //Gets state
 
-    public void setState(short newState) {
-        this.state = newState;
-    }
+    public static void setState(short newState) {
+        state = newState;
+    }   //Changes state
 
     public String getUsername() {
         return Username;
