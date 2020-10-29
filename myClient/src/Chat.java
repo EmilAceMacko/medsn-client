@@ -9,7 +9,10 @@ public class Chat implements Constants
 
     public Chat (MEDSN_Client owner) // The Chat's constructor.
     {
-        scanThread = new Thread() // The inner class for scanThread
+        // This was removed from the Chat class in the server, since both the client and server Chat classes are identical it has been commented out for now here as well.
+        // Thread is now it's own class created by Valdemar
+
+        /*scanThread = new Thread() // The inner class for scanThread
         {
             private Chat owner;
             private String input;
@@ -32,7 +35,7 @@ public class Chat implements Constants
             {
 
             }
-        };
+        }; */
     }
 
     public String checkInput()
@@ -44,5 +47,4 @@ public class Chat implements Constants
     {
         System.out.println(msg);
     }
-
 }
