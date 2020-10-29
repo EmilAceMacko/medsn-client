@@ -1,18 +1,26 @@
 package src;
 
+import java.util.Scanner;
+
 public class Chat implements Constants
 {
     private MEDSN_Client owner;
 
-    public type field;
+    public Thread scanThread;
 
     public Chat (MEDSN_Client owner)
     {
         //
     }
 
-    public <type> void Method ()
+    public String checkInput()
     {
         //
     }
+
+    public void writeChat (String msg)
+    {
+        //
+    }
+
 }
