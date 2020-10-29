@@ -29,7 +29,7 @@ public class MEDSN_Client implements Constants {
 
                 short i = socket.readshort();//<-----Check socket bliver lavet af Rasmus
 
-                if(i == NET.SERVER_ACCEPT) {
+                if(i == NET_SERVER_JOIN_ACCEPT) { // <-- I'm not sure the right constant is used here?
                     setState(STATE_CLIENT_ONLINE);
                 }
                 break;
