@@ -14,7 +14,7 @@ public class ScanThread implements Constants
 
     public ScanThread(Chat owner) // The Class' constructor. // Check for updates on the class diagram for further information.
     {
-        //
+        this.owner = owner;
     }
 
     public void run() //
