@@ -18,7 +18,7 @@ public class Chat implements Constants
             private Scanner scan = new Scanner(System.in);
 
 
-            public scanThread(Chat owner) // A bit of issues with this one. Return to look at the class diagram to fix it later.
+            public scanThread(Chat owner) // Can't be done like this must make a class for thread in order for it to work.
             {
                 //
             }
@@ -38,9 +38,9 @@ public class Chat implements Constants
         };
     }
 
-    public String checkInput()
+    public String message(String msg)
     {
-        return null; // Just for now, so it won't complain.
+        return null;
     }
 
     public void writeChat (String msg)
