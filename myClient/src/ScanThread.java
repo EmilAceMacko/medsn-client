@@ -10,17 +10,23 @@ public class ScanThread implements Constants
     private String input;
     public Boolean scanning;
 
+    private Scanner scan = new Scanner(System.in);
+
     public ScanThread(Chat owner) // The Class' constructor. // Check for updates on the class diagram for further information.
     {
         //
     }
 
-    public void run() // Check for updates on the class diagram for further information.
+    public void run() //
     {
         while (scanning == true)
         {
-
-            owner.message();
+            input = "";
+            input = scan.nextLine();
+            if (input != "")
+            {
+                owner.message(input);
+            }
         }
     }
 }
