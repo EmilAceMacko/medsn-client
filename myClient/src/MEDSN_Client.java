@@ -13,6 +13,7 @@ public class MEDSN_Client implements Constants {
     private String Username;
     private String hostAddress;
 
+
     public static void main(String[] args) {            //MAIN FUNCTION HERE <----|
 
         switch(state) {
@@ -45,7 +46,6 @@ public class MEDSN_Client implements Constants {
                 //something
                 break;
 
-
             }
         }
 
@@ -73,6 +73,10 @@ public class MEDSN_Client implements Constants {
 
     public void setHostAddress (String newHostAddress) {
         this.hostAddress = newHostAddress;
+    }
+    public void handleChatString(String chat) { //This Method needs something within it.
+
+
     }
 
 }
