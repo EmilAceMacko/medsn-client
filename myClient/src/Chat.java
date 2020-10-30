@@ -7,7 +7,7 @@ public class Chat implements Constants
     private MEDSN_Client owner;
     public Thread scanThread;
 
-    public Chat (MEDSN_Client owner) // The Chat's constructor.
+    public Chat (MEDSN_Client owner) // The Chat class' constructor.
     {
         // Check for updates on the class diagram for further information.
     }
