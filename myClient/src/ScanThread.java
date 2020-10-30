@@ -12,14 +12,14 @@ public class ScanThread
 
     public ScanThread(Chat owner)
     {
-        //
+        // Check for updates on the class diagram for further information.
     }
 
     public void run()
     {
         while (scanning == true)
         {
-            // Check class diagram for further information
+            // Check for updates on the class diagram for further information.
         }
     }
 }
