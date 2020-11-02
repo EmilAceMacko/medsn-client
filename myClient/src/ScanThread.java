@@ -6,7 +6,7 @@ public class ScanThread extends Thread // The new class for the thread used in t
 {
     private Chat owner;
     private String input;
-    public Boolean scanning;
+    public Boolean scanning = true;
 
     private Scanner scan = new Scanner(System.in);
 

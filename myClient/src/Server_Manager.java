@@ -7,15 +7,15 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class Server_Manager {
-    private MEDSN_Client owner;
+    //private MEDSN_Client owner;
     private int port = 8000;
     private DataInputStream in;
     private DataOutputStream out;
     private Socket socket;
 
     // constructor
-    public Server_Manager(MEDSN_Client owner) {
-        this.owner = owner;
+    public Server_Manager() {
+        //this.owner = owner;
     }
 
     public void connect(String host, String name, String pass) {
@@ -25,7 +25,7 @@ public class Server_Manager {
             socket = new Socket(host, port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            out.writeShort(owner.NET_CLIENT_JOIN_REQUEST);
+            out.writeShort(MEDSN_Client.NET_CLIENT_JOIN_REQUEST);
 
             // sends username and admin password to client manager
             byte[] array = name.getBytes();
@@ -44,8 +44,8 @@ public class Server_Manager {
 
     public void disconnect(boolean messageServer) {
         try {
-            if(messageServer) out.writeShort(owner.NET_CLIENT_QUIT);
-            owner.setState(owner.STATE_CLIENT_DISCONNECTING);
+            if(messageServer) out.writeShort(MEDSN_Client.NET_CLIENT_QUIT);
+            MEDSN_Client.setState(MEDSN_Client.STATE_CLIENT_DISCONNECTING);
             socket.close();
         }
         catch(IOException e) {
@@ -60,7 +60,7 @@ public class Server_Manager {
             int length = array.length;
 
             // writes the identifier, length and array to client manager
-            out.writeShort(owner.NET_CLIENT_CHAT);
+            out.writeShort(MEDSN_Client.NET_CLIENT_CHAT);
             out.writeInt(length);
             out.write(array);
         } catch (IOException e) {
@@ -72,47 +72,47 @@ public class Server_Manager {
     public void receiveMessage(){
         try{
             // variables for identifier and connection state for client
-           short clientState = owner.getState();
+           short clientState = MEDSN_Client.getState();
            short identifier = in.readShort();
 
            // checks if the client state is connecting
-           if (clientState == owner.STATE_CLIENT_CONNECTING) {
+           if (clientState == MEDSN_Client.STATE_CLIENT_CONNECTING) {
 
                String deniedMsg = null;
                 // checks if the server has accepted the connection
-               if (identifier == owner.NET_SERVER_JOIN_ACCEPT){
-                   owner.setState(owner.STATE_CLIENT_ONLINE);
+               if (identifier == MEDSN_Client.NET_SERVER_JOIN_ACCEPT){
+                   MEDSN_Client.setState(MEDSN_Client.STATE_CLIENT_ONLINE);
                }
                // checks if the server has denied the connection
-               else if (identifier == owner.NET_SERVER_JOIN_DENY_BANNED_IP){
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_BANNED_IP){
                    deniedMsg = "Denied: Banned IP";
                }
-               else if (identifier == owner.NET_SERVER_JOIN_DENY_BANNED_NAME){
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_BANNED_NAME){
                    deniedMsg = "Denied: Banned Name";
                }
-               else if (identifier == owner.NET_SERVER_JOIN_DENY_DUPLICATE){
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_DUPLICATE){
                    deniedMsg = "Denied: Already connected";
                }
-               else if (identifier == owner.NET_SERVER_JOIN_DENY_NO_ROOM){
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_NO_ROOM){
                    deniedMsg = "Denied: No Room";
                }
                 // handles denied connection
                if (deniedMsg != null){
-                   owner.setState(owner.STATE_CLIENT_OFFLINE);
-                   owner.chat.writeChat(deniedMsg);
+                   MEDSN_Client.setState(MEDSN_Client.STATE_CLIENT_OFFLINE);
+                   MEDSN_Client.chat.writeChat(deniedMsg);
                }
            }
            // checks if client state is online
-           else if (clientState == owner.STATE_CLIENT_ONLINE) {
+           else if (clientState == MEDSN_Client.STATE_CLIENT_ONLINE) {
                // check if message received
-               if (identifier == owner.NET_SERVER_CHAT){
+               if (identifier == MEDSN_Client.NET_SERVER_CHAT){
                    byte[] array = new byte[in.readInt()];
                    in.read(array);
                    String msg = Arrays.toString(array);
-                   owner.chat.writeChat(msg);
+                   MEDSN_Client.chat.writeChat(msg);
                }
                // check if client should quit
-               else if (identifier == owner.NET_SERVER_QUIT){
+               else if (identifier == MEDSN_Client.NET_SERVER_QUIT){
                    disconnect(false);
                }
            }

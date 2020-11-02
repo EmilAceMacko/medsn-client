@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class Chat implements Constants
 {
-    private MEDSN_Client owner;
+    //private MEDSN_Client owner;
     public ScanThread scanThread;
 
-    public Chat (MEDSN_Client owner) // The Chat class' constructor.
+    public Chat () // The Chat class' constructor.
     {
         // Check for updates on the class diagram for further instructions.
 
-        this.owner = owner;
+        //this.owner = owner;
 
         scanThread = new ScanThread(this);
         scanThread.start(); // Starts the scanner
@@ -25,7 +25,7 @@ public class Chat implements Constants
 
     public void message (String msg) // Check for updates on the class diagram for further instructions.
     {
-        owner.handleChatString(msg);
+        MEDSN_Client.handleChatString(msg);
     }
 
     public void writeChat (String msg) // Check for updates on the class diagram for further instructions.

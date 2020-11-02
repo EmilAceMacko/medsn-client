@@ -7,19 +7,17 @@ import javax.net.ssl.HostnameVerifier;
 
 public class MEDSN_Client implements Constants {
 
-    public Chat chat;
-    public  Server_Manager serverMgr;
+    public static Chat chat;
+    public static Server_Manager serverMgr;
     private static short state;
     private static String username;
     private static String hostAddress;
 
+    public static void main(String[] args) {            //MAIN FUNCTION HERE <----|
 
-    public void main(String[] args) {            //MAIN FUNCTION HERE <----|
-
-        chat = new Chat(this);
-        serverMgr = new Server_Manager(this);
+        chat = new Chat();
+        serverMgr = new Server_Manager();
         state = STATE_CLIENT_OFFLINE;
-
 
         while (state != STATE_NULL) {
 
@@ -50,7 +48,7 @@ public class MEDSN_Client implements Constants {
         chat.stopScanner();
     }
 
-    public short getState() {
+    public static short getState() {
         return state;
     }    //Gets state
 
@@ -63,7 +61,7 @@ public class MEDSN_Client implements Constants {
     }
 
     public void setUsername(String newUsername) {
-        this.username = newUsername;
+        username = newUsername;
     }
 
     public String getHostAddress(){
@@ -71,10 +69,10 @@ public class MEDSN_Client implements Constants {
     }
 
     public void setHostAddress (String newHostAddress) {
-        this.hostAddress = newHostAddress;
+        hostAddress = newHostAddress;
     }
     // Handles chat strings from the user (via the chat scanner).
-    public void handleChatString(String chatStr) {
+    public static void handleChatString(String chatStr) {
 
         boolean sendToServer = true;
 
@@ -112,6 +110,7 @@ public class MEDSN_Client implements Constants {
                             serverMgr.connect(hostAddress, username, adminPass);
                             setState(STATE_CLIENT_CONNECTING);
                         }
+                        else chat.writeChat("You did not give enough parameters. /connect <ip> <username> (opt)<password>");
                     }
                     else chat.writeChat("You can't connect when already connected/connecting.");
                     break;
