@@ -27,4 +27,9 @@ public class ScanThread extends Thread // The new class for the thread used in t
             }
         }
     }
+
+    public void setScanning (boolean scanning)
+    {
+        this.scanning = scanning;
+    }
 }
