@@ -8,47 +8,54 @@ import javax.net.ssl.HostnameVerifier;
 public class MEDSN_Client implements Constants {
 
     public Chat chat;
-    public Server_Manager serverMgr;
+    public  Server_Manager serverMgr;
     private static short state;
-    private String Username;
-    private String hostAddress;
+    private static String Username;
+    private static String hostAddress;
 
 
-    public static void main(String[] args) {            //MAIN FUNCTION HERE <----|
+    public void main(String[] args) {            //MAIN FUNCTION HERE <----|
 
-        switch(state) {
-            case(STATE_CLIENT_OFFLINE): {
-                //Input to connect IP address and username
-                //connect();
-
+        chat = new Chat(this);
+        serverMgr = new Server_Manager(this);
+        state = STATE_CLIENT_OFFLINE;
 
 
-                setState(STATE_CLIENT_CONNECTING);
-                break;
-            }
-            case(STATE_CLIENT_CONNECTING): {
+        while (state != STATE_NULL) {
 
-                short i = socket.readshort();//<-----Check socket bliver lavet af Rasmus
 
-                if(i == NET_SERVER_JOIN_ACCEPT) { // <-- I'm not sure the right constant is used here?
-                    setState(STATE_CLIENT_ONLINE);
+            switch (state) {
+                case (STATE_CLIENT_OFFLINE): {
+                    //Input to connect IP address and username
+                    //connect();
+
+
+                    setState(STATE_CLIENT_CONNECTING);
+                    break;
                 }
-                break;
-            }
-            case(STATE_CLIENT_ONLINE): {
-                //Something something
-                //setState(STATE_CLIENT_DISCONNECTING);
-                break;
+                case (STATE_CLIENT_CONNECTING): {
 
-            }
-            case(STATE_CLIENT_DISCONNECTING): {
+                    if (state == NET_SERVER_JOIN_ACCEPT) { // <-- I'm not sure the right constant is used here?
+                        setState(STATE_CLIENT_ONLINE);
+                    }
+                    break;
+                }
+                case (STATE_CLIENT_ONLINE): {
+                    //Something something
+                    //setState(STATE_CLIENT_DISCONNECTING);
+                    break;
 
-                //something
-                break;
+                }
+                case (STATE_CLIENT_DISCONNECTING): {
 
+                    setState(STATE_CLIENT_OFFLINE);
+                    //something
+                    break;
+
+                }
             }
+
         }
-
     }
 
     public short getState() {
