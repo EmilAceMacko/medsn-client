@@ -13,7 +13,7 @@ public class Chat implements Constants
         this.owner = owner;
     }
 
-    public Void message (String msg) // Check for updates on the class diagram for further instructions.
+    public void message (String msg) // Check for updates on the class diagram for further instructions.
     {
         owner.handleChatString(msg);
     }
