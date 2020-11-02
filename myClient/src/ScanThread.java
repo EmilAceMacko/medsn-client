@@ -2,7 +2,7 @@ package src;
 
 import java.util.Scanner;
 
-public class ScanThread implements Constants // The new class for the thread used in the Chat class.
+public class ScanThread extends Thread // The new class for the thread used in the Chat class.
 {
     private Chat owner;
     private String input;

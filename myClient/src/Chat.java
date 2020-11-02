@@ -10,7 +10,11 @@ public class Chat implements Constants
     public Chat (MEDSN_Client owner) // The Chat class' constructor.
     {
         // Check for updates on the class diagram for further instructions.
+
         this.owner = owner;
+
+        ScanThread scanner = new ScanThread(this);
+        scanner.start();
     }
 
     public void message (String msg) // Check for updates on the class diagram for further instructions.
