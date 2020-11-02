@@ -82,6 +82,13 @@ public class MEDSN_Client implements Constants {
         this.hostAddress = newHostAddress;
     }
     public void handleChatString(String chat) { //This Method needs something within it.
+        if(chat.startsWith("/")) {
+            String[] param = chat.split("\\s+");
+
+
+        } else {
+            System.out.println("You cannot send a message being offline. Please type /connect to enter the chat module");
+        }
 
 
     }
