@@ -10,7 +10,7 @@ public class MEDSN_Client implements Constants {
     public Chat chat;
     public  Server_Manager serverMgr;
     private static short state;
-    private static String Username;
+    private static String username;
     private static String hostAddress;
 
 
@@ -30,32 +30,24 @@ public class MEDSN_Client implements Constants {
                     //connect();
 
 
-                    setState(STATE_CLIENT_CONNECTING);
+                    //setState(STATE_CLIENT_CONNECTING);
                     break;
                 }
-                case (STATE_CLIENT_CONNECTING): {
-
-                    if (state == NET_SERVER_JOIN_ACCEPT) { // <-- I'm not sure the right constant is used here?
-                        setState(STATE_CLIENT_ONLINE);
-                    }
-                    break;
-                }
+                case (STATE_CLIENT_CONNECTING):
                 case (STATE_CLIENT_ONLINE): {
-                    //Something something
-                    //setState(STATE_CLIENT_DISCONNECTING);
+                    serverMgr.receiveMessage();
                     break;
-
                 }
                 case (STATE_CLIENT_DISCONNECTING): {
-
+                    // Go offline:
                     setState(STATE_CLIENT_OFFLINE);
-                    //something
                     break;
-
                 }
             }
 
         }
+
+        chat.stopScanner();
     }
 
     public short getState() {
@@ -67,11 +59,11 @@ public class MEDSN_Client implements Constants {
     }   //Changes state
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String newUsername) {
-        this.Username = newUsername;
+        this.username = newUsername;
     }
 
     public String getHostAddress(){
@@ -81,15 +73,65 @@ public class MEDSN_Client implements Constants {
     public void setHostAddress (String newHostAddress) {
         this.hostAddress = newHostAddress;
     }
-    public void handleChatString(String chat) { //This Method needs something within it.
-        if(chat.startsWith("/")) {
-            String[] param = chat.split("\\s+");
+    // Handles chat strings from the user (via the chat scanner).
+    public void handleChatString(String chatStr) {
 
+        boolean sendToServer = true;
 
-        } else {
-            System.out.println("You cannot send a message being offline. Please type /connect to enter the chat module");
+        if(chatStr.startsWith("/")) {
+            String[] param = chatStr.split("\\s+");
+
+            switch(param[0]) {
+                case("/help"): {
+                    sendToServer = false;
+                    chat.writeChat("Here's all the commands:\n" +
+                            "/help - Display this list of commands.\n" +
+                            "/quit or /exit - Quits the program.\n" +
+                            "/connect <ip> <username> <adminpass> - Connect to a server with a username (and an optional admin password)\n" +
+                            "/disconnect - Disconnect from a server (when connected).");
+                    break;
+                }
+                case("/quit"):
+                case("/exit"): {
+                    sendToServer = false;
+                    setState(STATE_NULL);
+                    break;
+                }
+                case("/connect"): {
+                    sendToServer = false;
+                    if(state == STATE_CLIENT_OFFLINE)
+                    {
+                        // If the user gave enough parameters:
+                        if(param.length >= 3)
+                        {
+                            hostAddress = param[1];
+                            username = param[2];
+                            String adminPass = "";
+                            if(param.length >= 4) adminPass = param[3];
+
+                            serverMgr.connect(hostAddress, username, adminPass);
+                            setState(STATE_CLIENT_CONNECTING);
+                        }
+                    }
+                    else chat.writeChat("You can't connect when already connected/connecting.");
+                    break;
+                }
+                case("/disconnect"): {
+                    sendToServer = false;
+
+                    // Send message to the server that we've disconnected, and then set our state to offline:
+                    serverMgr.disconnect(true);
+                    break;
+                }
+            }
+
         }
 
+        // At this point, if sendToServer is true and we are online, then we send the command or message to the server:
+        if(sendToServer && state == STATE_CLIENT_ONLINE)
+        {
+            serverMgr.sendMessage(chatStr);
+        }
 
     }
 
