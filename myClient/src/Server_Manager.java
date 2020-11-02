@@ -37,6 +37,7 @@ public class Server_Manager {
         }
 
     }
+
     public void sendMessage(String msg){
         try{
             // creates byte array from the given message and saves the length
@@ -49,9 +50,10 @@ public class Server_Manager {
             out.write(array);
         } catch (IOException e) {
             System.err.println("CLIENT ERROR: " + e + " - Could not send message");
-            System.exit(-1); // closes the program
+
         }
     }
+
     public void receiveMessage(){
         try{
             // variables for identifier and connection state for client
@@ -102,7 +104,6 @@ public class Server_Manager {
            }
         } catch (IOException e) {
             System.err.println("CLIENT ERROR: " + e + " - Could not receive message");
-            System.exit(-1); // closes the program
         }
     }
 }
