@@ -17,7 +17,7 @@ public class ScanThread implements Constants // The new class for the thread use
 
     public void run() //
     {
-        while (scanning == true)
+        while (scanning)
         {
             input = "";
             input = scan.nextLine();
