@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Server_Manager {
@@ -25,6 +26,7 @@ public class Server_Manager {
             socket = new Socket(host, port);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            out.flush();
             out.writeShort(MEDSN_Client.NET_CLIENT_JOIN_REQUEST);
 
             // sends username and admin password to client manager
@@ -34,6 +36,7 @@ public class Server_Manager {
             array = pass.getBytes();
             out.writeInt(array.length);
             out.write(array);
+            out.flush();
 
         } catch (IOException e) {
             System.err.println("CLIENT ERROR: " + e + " - Could not set up socket on host " + host + " and port " + port);
@@ -46,6 +49,7 @@ public class Server_Manager {
         try {
             if(messageServer) out.writeShort(MEDSN_Client.NET_CLIENT_QUIT);
             MEDSN_Client.setState(MEDSN_Client.STATE_CLIENT_DISCONNECTING);
+            out.flush();
             socket.close();
         }
         catch(IOException e) {
@@ -60,9 +64,11 @@ public class Server_Manager {
             int length = array.length;
 
             // writes the identifier, length and array to client manager
+            out.flush();
             out.writeShort(MEDSN_Client.NET_CLIENT_CHAT);
             out.writeInt(length);
             out.write(array);
+            out.flush();
         } catch (IOException e) {
             System.err.println("CLIENT ERROR: " + e + " - Could not send message");
 
@@ -82,6 +88,7 @@ public class Server_Manager {
                 // checks if the server has accepted the connection
                if (identifier == MEDSN_Client.NET_SERVER_JOIN_ACCEPT){
                    MEDSN_Client.setState(MEDSN_Client.STATE_CLIENT_ONLINE);
+                   MEDSN_Client.chat.writeChat("Connected to server.");
                }
                // checks if the server has denied the connection
                else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_BANNED_IP){
@@ -108,12 +115,13 @@ public class Server_Manager {
                if (identifier == MEDSN_Client.NET_SERVER_CHAT){
                    byte[] array = new byte[in.readInt()];
                    in.read(array);
-                   String msg = Arrays.toString(array);
+                   String msg = new String(array, StandardCharsets.UTF_8);
                    MEDSN_Client.chat.writeChat(msg);
                }
                // check if client should quit
                else if (identifier == MEDSN_Client.NET_SERVER_QUIT){
                    disconnect(false);
+                   MEDSN_Client.chat.writeChat("Server was closed.");
                }
            }
         } catch (IOException e) {
@@ -121,4 +129,3 @@ public class Server_Manager {
         }
     }
 }
-

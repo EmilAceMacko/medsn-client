@@ -31,7 +31,10 @@ public class MEDSN_Client implements Constants {
                     //setState(STATE_CLIENT_CONNECTING);
                     break;
                 }
-                case (STATE_CLIENT_CONNECTING):
+                case (STATE_CLIENT_CONNECTING): {
+                    serverMgr.receiveMessage();
+                    break;
+                }
                 case (STATE_CLIENT_ONLINE): {
                     serverMgr.receiveMessage();
                     break;
@@ -89,7 +92,11 @@ public class MEDSN_Client implements Constants {
                             "/disconnect - Disconnect from a server (when connected).");
                     break;
                 }
-                case("/quit"):
+                case("/quit"): {
+                    sendToServer = false;
+                    setState(STATE_NULL);
+                    break;
+                }
                 case("/exit"): {
                     sendToServer = false;
                     setState(STATE_NULL);
@@ -123,7 +130,6 @@ public class MEDSN_Client implements Constants {
                     break;
                 }
             }
-
         }
 
         // At this point, if sendToServer is true and we are online, then we send the command or message to the server:
