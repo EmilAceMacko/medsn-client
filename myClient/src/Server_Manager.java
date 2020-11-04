@@ -5,11 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class Server_Manager {
     //private MEDSN_Client owner;
-    private int port = 8000;
+    private int port = 1;
     private DataInputStream in;
     private DataOutputStream out;
     private Socket socket;
@@ -118,10 +117,22 @@ public class Server_Manager {
                    String msg = new String(array, StandardCharsets.UTF_8);
                    MEDSN_Client.chat.writeChat(msg);
                }
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_KICK){
+                   disconnect(false);
+                   MEDSN_Client.chat.writeChat("Disconnected: You were kicked from the server.");
+               }
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_BANNED_IP){
+                   disconnect(false);
+                   MEDSN_Client.chat.writeChat("Disconnected: Your IP was banned.");
+               }
+               else if (identifier == MEDSN_Client.NET_SERVER_JOIN_DENY_BANNED_NAME){
+                   disconnect(false);
+                   MEDSN_Client.chat.writeChat("Disconnected: Your username was banned.");
+               }
                // check if client should quit
                else if (identifier == MEDSN_Client.NET_SERVER_QUIT){
                    disconnect(false);
-                   MEDSN_Client.chat.writeChat("Server was closed.");
+                   MEDSN_Client.chat.writeChat("Disconnected: The server was closed.");
                }
            }
         } catch (IOException e) {

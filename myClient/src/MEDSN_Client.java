@@ -1,10 +1,5 @@
 package src;
 
-import sun.security.krb5.internal.HostAddress;
-
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.HostnameVerifier;
-
 public class MEDSN_Client implements Constants {
 
     public static Chat chat;
@@ -19,8 +14,15 @@ public class MEDSN_Client implements Constants {
         serverMgr = new Server_Manager();
         state = STATE_CLIENT_OFFLINE;
 
-        while (state != STATE_NULL) {
+        // Add shutdown hook (runs a last thread when application is shut down):
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                if(state == STATE_CLIENT_ONLINE) MEDSN_Client.serverMgr.disconnect(true);
+            }
+        });
 
+
+        while (state != STATE_NULL) {
 
             switch (state) {
                 case (STATE_CLIENT_OFFLINE): {
@@ -94,11 +96,21 @@ public class MEDSN_Client implements Constants {
                 }
                 case("/quit"): {
                     sendToServer = false;
+                    if(state == STATE_CLIENT_ONLINE)
+                    {
+                        // Send message to the server that we've disconnected:
+                        serverMgr.disconnect(true);
+                    }
                     setState(STATE_NULL);
                     break;
                 }
                 case("/exit"): {
                     sendToServer = false;
+                    if(state == STATE_CLIENT_ONLINE)
+                    {
+                        // Send message to the server that we've disconnected:
+                        serverMgr.disconnect(true);
+                    }
                     setState(STATE_NULL);
                     break;
                 }
@@ -124,9 +136,13 @@ public class MEDSN_Client implements Constants {
                 }
                 case("/disconnect"): {
                     sendToServer = false;
-
-                    // Send message to the server that we've disconnected, and then set our state to offline:
-                    serverMgr.disconnect(true);
+                    if(state == STATE_CLIENT_ONLINE)
+                    {
+                        chat.writeChat("Disconnected from server.");
+                        // Send message to the server that we've disconnected, and then set our state to "disconnecting":
+                        serverMgr.disconnect(true);
+                        setState(STATE_CLIENT_DISCONNECTING);
+                    }
                     break;
                 }
             }

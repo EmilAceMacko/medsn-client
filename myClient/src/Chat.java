@@ -1,7 +1,5 @@
 package src;
 
-import java.util.Scanner;
-
 public class Chat implements Constants
 {
     //private MEDSN_Client owner;
